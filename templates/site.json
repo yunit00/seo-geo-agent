@@ -1,0 +1,15 @@
+{
+  "domain": "",
+  "workdir": "",
+  "region": "225",
+  "hub_pages": ["/"],
+  "watch_urls": ["/", "/sitemap.xml", "/robots.txt"],
+  "brand_queries": [],
+  "noise_queries": [],
+  "strong_domains": [],
+  "referrer_groups": {},
+  "known_issues": [],
+  "logs": {"source": "none"},
+  "leads_command": "",
+  "alert_command": ""
+}

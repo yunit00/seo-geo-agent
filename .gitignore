@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.DS_Store
+# Ключи и настройки сайта живут вне папки скилла, но на всякий случай:
+secrets.env
+*service-account*.json
+site.json
+!templates/site.json
+!templates/secrets.env
