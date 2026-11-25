@@ -76,6 +76,8 @@ def jobs(full: bool, pulse: bool, out: Path):
             add(f"gsc_{c}", "Search Console", "gsc.py", c, "--days", 28)
         add("gsc_sitemaps", "Search Console", "gsc.py", "sitemaps")
         add("gsc_reach_8_20", "Search Console", "gsc_reach.py")
+        # Двойники и слабый CTR против собственной кривой сайта.
+        add("gsc_gaps", "Search Console", "gsc_gaps.py")
         if pulse:
             add("gsc_summary_7", "Search Console", "gsc.py", "summary", "--days", 7)
             add("gsc_pages_7", "Search Console", "gsc.py", "pages", "--days", 7)
@@ -90,6 +92,10 @@ def jobs(full: bool, pulse: bool, out: Path):
         add("periods", "Логи", "periods.py", out / "periods.json", timeout=300)
     else:
         missing.append("Логи сервера")
+
+    # Устаревшие факты на страницах и вышедшие сроки акций. Ключи не нужны.
+    if (_site.WORKDIR / "facts.md").exists():
+        add("stale_facts", "Сайт", "stale_facts.py", timeout=600)
 
     if (_site.CONFIG_DIR / "positions").exists() and any((_site.CONFIG_DIR / "positions").glob("*.json")):
         add("positions", "Позиции", "positions.py", "--show")

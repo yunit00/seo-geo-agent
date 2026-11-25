@@ -27,7 +27,7 @@ TEMPLATES = _site.SKILL_DIR / "templates"
 # Рабочие документы: шаблон -> имя в workdir
 DOCS = {"profile.md": "profile.md", "status.md": "status.md", "hypotheses.md": "hypotheses.md",
         "events.md": "events.md", "mistakes.md": "mistakes.md", "queries.txt": "queries.txt",
-        "candidates.txt": "candidates.txt"}
+        "candidates.txt": "candidates.txt", "facts.md": "facts.md"}
 
 
 def clean_domain(raw: str) -> str:

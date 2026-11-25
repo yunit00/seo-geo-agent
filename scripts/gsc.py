@@ -114,6 +114,30 @@ def query(api, site: str, start: str, end: str, dimensions=None, limit=100) -> l
     return result.get("rows", [])
 
 
+def all_rows(days: int, dimensions: list[str], page_url: str | None = None, cap: int = 100_000):
+    """Все строки за последние days дней страницами по 25 000, без обрезки хвоста.
+
+    page_url сужает выгрузку до одной страницы. Возвращает (строки, начало, конец);
+    окно кончается на сегодня минус LAG_DAYS, потому что данные Google отстают.
+    """
+    api, site = service(), site_url()
+    end = date.today() - timedelta(days=LAG_DAYS)
+    start = end - timedelta(days=days - 1)
+    body = {"startDate": start.isoformat(), "endDate": end.isoformat(),
+            "dimensions": dimensions, "rowLimit": 25_000, "startRow": 0}
+    if page_url:
+        body["dimensionFilterGroups"] = [{"filters": [
+            {"dimension": "page", "operator": "equals", "expression": page_url}]}]
+    out = []
+    while len(out) < cap:
+        chunk = api.searchanalytics().query(siteUrl=site, body=body).execute().get("rows", [])
+        out += chunk
+        if len(chunk) < body["rowLimit"]:
+            break
+        body["startRow"] += body["rowLimit"]
+    return out, start, end
+
+
 def compare(api, site, dimension, d1, d2, p1, p2, limit=25, label="Значение"):
     now = query(api, site, d1, d2, [dimension], limit)
     was = query(api, site, p1, p2, [dimension], 500)
